@@ -15,7 +15,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      imageUrl: "",
+      inputText: "",
+      messages: [],
     };
   },
   created() {
@@ -23,6 +24,7 @@ export default {
       .get("/.netlify/functions/get-api-key")
       //response.data.apiKey
       .then((response) => {
+        console.log('apiKey is ' + response.data.apiKey);
         let apiKey = response.data.apiKey;
 
         axios
