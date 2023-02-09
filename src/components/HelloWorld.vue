@@ -18,9 +18,10 @@ export default {
   },
   methods: {
     async sendText() {
-    let apiKey = process.env.API_KEY;
+    let apiKey = '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';
+    console.log('api key is ' + apiKey);
       try {
-        const response = await axios.post('https://api.openai.com/v1/engines/davinci/jobs', {
+        const response = await axios.post('https://api.openai.com/v1/completions', {
           prompt: this.inputText,
           max_tokens: 100,
         }, {
