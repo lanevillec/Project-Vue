@@ -1,12 +1,16 @@
 <template>
   <div>
-    <img :src="imageUrl" />
+    <textarea v-model="inputText"></textarea>
+    <button @click="sendMessage">Send</button>
+    <div v-for="(message, index) in messages" :key="index">
+      {{ message }}
+    </div>
   </div>
 </template>
 
+
 <script>
 import axios from "axios";
-import openai from "openai";
 
 export default {
   data() {
@@ -17,24 +21,30 @@ export default {
   created() {
     axios
       .get("/.netlify/functions/get-api-key")
+      //response.data.apiKey
       .then((response) => {
-        const model = openai.prompt("image-alpha-001", {
-          apiKey: response.data.apiKey,
-        });
+        let apiKey = response.data.apiKey;
 
         axios
-      .post("https://api.openai.com/v1/images/generations", {
-        model: model,
-        prompt: "A tree with leaves",
-      })
-      .then((response) => {
-        this.imageUrl = response.data.data[0].url;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
+        .post("https://api.openai.com/v1/engines/davinci/completions", {
+          prompt: this.inputText,
+          max_tokens: 100,
+          n: 1,
+          stop: "",
+          temperature: 0.5,
+        }, {
+          headers: {
+            "Authorization": `Bearer ${apiKey}`
+          }
+        })
+        .then((response) => {
+          this.messages.push(response.data.choices[0].text);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       })
   },
 }
+
 </script>
