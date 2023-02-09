@@ -19,13 +19,8 @@ export default {
       messages: [],
     };
   },
-  created() {
-    axios
-      .get("/.netlify/functions/get-api-key")
-      //response.data.apiKey
-      .then((response) => {
-        console.log('apiKey is ' + response.data.apiKey);
-        let apiKey = response.data.apiKey;
+  sendMessage() {
+        const apiKey = `/.netlify/functions/get-api-key?id=${apiKey}`
 
         axios
         .post("https://api.openai.com/v1/engines/davinci/completions", {
@@ -45,7 +40,6 @@ export default {
         .catch((error) => {
           console.error(error);
         });
-      })
   },
 }
 
