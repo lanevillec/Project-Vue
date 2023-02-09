@@ -18,13 +18,14 @@ export default {
   },
   methods: {
     async sendText() {
+    let apiKey = process.env.API_KEY;
       try {
         const response = await axios.post('https://api.openai.com/v1/engines/davinci/jobs', {
           prompt: this.inputText,
           max_tokens: 100,
         }, {
           headers: {
-            'Authorization': `Bearer ${'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'}`,
+            'Authorization': `Bearer ${apiKey}`,
           },
         });
         this.response = response.data.choices[0].text;
