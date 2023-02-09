@@ -1,46 +1,40 @@
 <template>
   <div>
-    <textarea v-model="inputText"></textarea>
-    <button @click="sendText">Send</button>
-    <div>{{ response }}</div>
+    <img :src="imageUrl" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import openai from "@openai/image-api";
 
 export default {
   data() {
     return {
-      inputText: "",
-      response: "",
+      imageUrl: "",
     };
   },
-  methods: {
-    async sendText() {
-      axios
-        .post(
-          "https://api.openai.com/v1/completions",
-          {
-            model: "text-davinci-003",
-            prompt: this.inputText,
-            max_tokens: 1024,
-            temperature: 0.5,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-            },
-          }
-        )
-        .then(function (response) {
-          console.log(response.data.choices[0].text);
-          this.response = response.data.choices[0].text;
-        })
-        .catch(function (error) {
-          console.error(error);
+  created() {
+    axios
+      .get("/.netlify/functions/get-api-key")
+      .then((response) => {
+        const model = openai.prompt("image-alpha-001", {
+          apiKey: response.data.apiKey,
         });
-    },
+
+        axios
+      .post("https://api.openai.com/v1/images/generations", {
+        model: model,
+        prompt: "A tree with leaves",
+      })
+      .then((response) => {
+        this.imageUrl = response.data.data[0].url;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+      })
   },
-};
+}
 </script>
