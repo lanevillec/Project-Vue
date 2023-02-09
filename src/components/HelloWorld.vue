@@ -6,7 +6,7 @@
 
 <script>
 import axios from "axios";
-import openai from "@openai/image-api";
+import openai from "openai";
 
 export default {
   data() {
