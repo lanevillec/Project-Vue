@@ -21,7 +21,8 @@ export default {
     };
   },
 
-  async sendMessage() {
+  sendMessage() {
+    console.log('button has been clicked')
     fetch('/.netlify/functions/api-call', {
       method: 'POST',
       body: JSON.stringify({ text: 'your input here' }),
