@@ -1,42 +1,41 @@
-<template>
-  <div>
-    <textarea v-model="inputText"></textarea>
-    <button @click="sendMessage">Send</button>
-    <div v-for="(message, index) in messages" :key="index">
-      {{ message }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Netlify Function Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.0.0/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Netlify Function Example</h1>
+      <form>
+        <label for="input">Enter text:</label>
+        <input type="text" id="input" v-model="input" required>
+        <button id="submit-button" @click.prevent="submit">Submit</button>
+      </form>
+      <pre id="response">{{ response }}</pre>
     </div>
-  </div>
-</template>
 
+    <script>
+      const app = new Vue({
+        el: '#app',
+        data: {
+          input: '',
+          response: ''
+        },
+        methods: {
+          async submit() {
+            const response = await fetch('/.netlify/functions/api-call', {
+              method: 'POST',
+              body: JSON.stringify({ text: this.input }),
+              headers: { 'Content-Type': 'application/json' }
+            });
 
-<script>
-//import axios from "axios";
-
-export default {
-
-  data() {
-    return {
-      inputText: "",
-      messages: [],
-    };
-  },
-
-  sendMessage() {
-    console.log('button has been clicked')
-    fetch('/.netlify/functions/api-call', {
-      method: 'POST',
-      body: JSON.stringify({ text: 'your input here' }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.error(error);
+            const data = await response.json();
+            this.response = JSON.stringify(data, null, 2);
+          }
+        }
       });
+    </script>
+  </body>
+</html>
 
-  },
-}
-
-</script>
