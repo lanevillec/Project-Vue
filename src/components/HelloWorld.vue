@@ -22,9 +22,19 @@ export default {
   },
 
   async sendMessage() {
-        const resp = await fetch(`/.netlify/functions/get-api-key?inputText=${ this.inputText }`);
-        this.msg = await resp.json()
-        console.log('message returned is ' + this.msg)
+    fetch('/.netlify/functions/api-call', {
+      method: 'POST',
+      body: JSON.stringify({ text: 'your input here' }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
   },
 }
 
