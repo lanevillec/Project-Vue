@@ -10,36 +10,20 @@
 
 
 <script>
-import axios from "axios";
+//import axios from "axios";
 
 export default {
+
   data() {
     return {
       inputText: "",
       messages: [],
     };
   },
-  sendMessage() {
-        const apiKey = `/.netlify/functions/get-api-key?id=${apiKey}`
 
-        axios
-        .post("https://api.openai.com/v1/engines/davinci/completions", {
-          prompt: this.inputText,
-          max_tokens: 100,
-          n: 1,
-          stop: "",
-          temperature: 0.5,
-        }, {
-          headers: {
-            "Authorization": `Bearer ${apiKey}`
-          }
-        })
-        .then((response) => {
-          this.messages.push(response.data.choices[0].text);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+  async sendMessage() {
+        const resp = await fetch(`/.netlify/functions/get-api-key?inputText=${ this.inputText }`);
+        this.msg = (await resp.json()).message
   },
 }
 
