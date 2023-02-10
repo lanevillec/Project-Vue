@@ -23,7 +23,8 @@ export default {
 
   async sendMessage() {
         const resp = await fetch(`/.netlify/functions/get-api-key?inputText=${ this.inputText }`);
-        this.msg = (await resp.json()).message
+        this.msg = await resp.json()
+        console.log('message returned is ' + this.msg)
   },
 }
 

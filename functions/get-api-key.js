@@ -3,7 +3,8 @@ exports.handler = async (event) => {
   //const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
   const inputText = event.queryStringParameters.inputText
-  console.log('input text received to netlify function is ' + inputText)
+
+  return 'your input text was!' + inputText
 
   /*axios
         .post("https://api.openai.com/v1/engines/davinci/completions", {
