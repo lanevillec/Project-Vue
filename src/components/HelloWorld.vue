@@ -6,13 +6,15 @@
   </head>
   <body>
     <div id="app">
-      <h1>Netlify Function Example</h1>
-      <form>
-        <label for="input">Enter text:</label>
-        <input type="text" id="input" v-model="input" required>
-        <button id="submit-button" @click.prevent="submit">Submit</button>
-      </form>
-      <pre id="response">{{ response }}</pre>
+      <template>
+        <h1>Netlify Function Example</h1>
+        <form>
+          <label for="input">Enter text:</label>
+          <input type="text" id="input" v-model="input" required>
+          <button id="submit-button" @click.prevent="submit">Submit</button>
+        </form>
+        <pre id="response">{{ response }}</pre>
+      </template>
     </div>
 
     <script>
@@ -38,4 +40,5 @@
     </script>
   </body>
 </html>
+
 
