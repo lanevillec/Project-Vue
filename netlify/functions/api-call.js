@@ -11,7 +11,6 @@ exports.handler = async (event) => {
         temperature: 0.6
       },
       {
-        timeout: 1000,
         headers: {
           'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
           'Content-Type': 'application/json'
