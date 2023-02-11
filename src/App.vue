@@ -4,36 +4,47 @@
     <button @click="sendInput">Send Input</button>
     <button @click="getValue">Get Value</button>
     <button @click="passAndReceiveValue">Pass and Receive Value</button>
-    {{ message }}
+    <div>{{ message }}</div>
+    changes!112121
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       inputText: "",
+      message: "",
+      //use 'http://localhost:8080/.netlify/functions/' for netlify dev server
+      endPoint: '/.netlify/functions/',
     };
   },
   methods: {
     async getValue() {
       try {
-        const response = await fetch("/.netlify/functions/test-get-value");
+        //was /.netlify/functions/test-get-value
+        console.log('getValue function was triggered successfully!')
+        const response = await fetch(this.endPoint.concat("test-get-value"));
         const data = await response.json();
         console.log('Success! Was able to get value from netlify function: ' + JSON.stringify(data));
       } catch (error) {
         console.error(error);
       }
     },
-    async passandReceiveValue() {
-      const axios = require('axios');
+    async passAndReceiveValue() {
       console.log('passAndReceive has been triggered with the follwing value: ' + this.inputText)
+
+
       try {
-        const res = await axios.post('/.netlify/functions/test-pass-value', {
+        const response = await axios.post(this.endPoint.concat("test-pass-value"), {
           message: this.inputText
         });
-        this.response = res.data;
-        console.log('Received this value back from netlify function: ' + JSON.stringify(this.data))
+        console.log('Response received from netlify function test-past-value is: ' + JSON.stringify(response))
+        let message = JSON.parse(response.config.data).message
+        console.log('Input value received back from netlify function is ' + message)
+        this.message = message
       } catch (err) {
         console.error(err);
       }
