@@ -16,9 +16,11 @@ export default {
     async sendInput() {
       try {
         console.log('the input from the user to be sent to netlify function is: ' + this.inputText)
+        let bodyToSend = JSON.stringify({ input: this.inputText })
+        console.log('bodyToSend to netlify function is: ' + bodyToSend)
         const response = await fetch("/.netlify/functions/api-call", {
           method: "POST",
-          body: JSON.stringify({ input: this.inputText })
+          body: bodyToSend
         });
         const data = await response.json();
         console.log(data);
