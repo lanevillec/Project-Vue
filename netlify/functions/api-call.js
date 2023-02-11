@@ -8,6 +8,7 @@ exports.handler = async (event) => {
       {
         model: "text-davinci-003",
         prompt: input,
+        temperature: 0.6
       },
       {
         timeout: 1000,
