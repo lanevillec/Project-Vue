@@ -34,7 +34,7 @@ export default {
           body: JSON.stringify({ input: this.inputText })
         });
         const data = await response.json();
-        console.log(data);
+        console.log('Success! Was able to get info from openai api: ' + JSON.stringify(data));
       } catch (error) {
         console.error('error with sending request to netlify function: ' + error);
       }
