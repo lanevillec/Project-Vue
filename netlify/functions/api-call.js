@@ -2,8 +2,32 @@ const openai = require('openai');
 
 exports.handler = async (event) => {
   let input = event.body.input
-  console.log('input netlify function received is: ' + input)
-  openai.prompt(input, {
+
+  try {
+    const completion = await openai.createCompletion(
+      {
+        model: "text-davinci-003",
+        prompt: input,
+      },
+      {
+        timeout: 1000,
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+      }
+    );
+    console.log(completion.data.choices[0].text);
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.status);
+      console.log(error.response.data);
+    } else {
+      console.log(error.message);
+    }
+  }
+}
+  /*openai.prompt(input, {
     model: "davinci",
     apiKey: process.env.OPENAI_API_KEY
   }, function(err, completions) {
@@ -18,4 +42,4 @@ exports.handler = async (event) => {
       body: JSON.stringify(completions)
     };
   });
-};
+};*/
