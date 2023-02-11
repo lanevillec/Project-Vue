@@ -2,11 +2,11 @@ const axios = require('axios');
 
 exports.handler = async (event) => {
   const data = JSON.parse(event.body);
-  const text = data.text;
+  console.log(data)
 
   try {
     const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-002/jobs', {
-      prompt: text
+      prompt: data
     }, {
       headers: {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
