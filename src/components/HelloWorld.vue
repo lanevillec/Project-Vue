@@ -20,7 +20,10 @@ export default {
         console.log('bodyToSend to netlify function is: ' + bodyToSend)
         const response = await fetch("/.netlify/functions/api-call", {
           method: "POST",
-          body: bodyToSend
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ input: this.inputText })
         });
         const data = await response.json();
         console.log(data);
