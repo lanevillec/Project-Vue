@@ -1,35 +1,21 @@
-const axios = require('axios');
+const openai = require('openai');
 
 exports.handler = async (event) => {
-
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type"
-  };
-
-  const data = JSON.parse(event.body);
-  const input = data.input
-  console.log('the data received from the view app to the netlify function is: ' + data)
-  console.log('the input from the data received from vue is: ' + input)
-  //test
-  try {
-    const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-002/jobs', {
-      prompt: input
-    }, {
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-      }
-    });
+  let input = event.body.input
+  console.log('input netlify function received is: ' + input)
+  openai.prompt(input, {
+    model: "davinci",
+    apiKey: process.env.OPENAI_API_KEY
+  }, function(err, completions) {
+    if (err) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ msg: err.message })
+      };
+    }
     return {
       statusCode: 200,
-      headers,
-      body: JSON.stringify(response.data)
+      body: JSON.stringify(completions)
     };
-  } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ msg: err.message })
-    };
-  }
+  });
 };
