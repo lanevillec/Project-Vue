@@ -7,7 +7,7 @@ exports.handler = async (event) => {
     const completion = await openai.createCompletion(
       {
         model: "text-davinci-003",
-        prompt: input,
+        prompt: "Hello World!",
         temperature: 0.6
       },
       {
