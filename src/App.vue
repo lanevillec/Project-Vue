@@ -3,6 +3,7 @@
     <input v-model="inputText" />
     <button @click="sendInput">Send Input</button>
     <button @click="getValue">Get Value</button>
+    <button @click="sendValue">Send Value</button>
   </div>
 </template>
 
@@ -10,7 +11,8 @@
 export default {
   data() {
     return {
-      inputText: ""
+      inputText: "",
+      message: "",
     };
   },
   methods: {
@@ -21,6 +23,17 @@ export default {
         console.log('Success! Was able to get value from netlify function: ' + JSON.stringify(data));
       } catch (error) {
         console.error(error);
+      }
+    },
+    async passValue() {
+      const axios = require('axios');
+      try {
+        const res = await axios.post('/.netlify/functions/test-pass-value', {
+          message: this.message
+        });
+        this.response = res.data;
+      } catch (err) {
+        console.error(err);
       }
     },
     async sendInput() {
