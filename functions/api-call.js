@@ -3,7 +3,7 @@ const axios = require('axios');
 exports.handler = async (event) => {
   const data = JSON.parse(event.body);
   console.log(data)
-
+  //test
   try {
     const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-002/jobs', {
       prompt: data
