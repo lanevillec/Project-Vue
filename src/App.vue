@@ -18,7 +18,7 @@ export default {
       try {
         const response = await fetch("/.netlify/functions/test-get-value");
         const data = await response.json();
-        console.log('Success! Was able to get value from netlify function: ' + data);
+        console.log('Success! Was able to get value from netlify function: ' + JSON.stringify(data));
       } catch (error) {
         console.error(error);
       }
