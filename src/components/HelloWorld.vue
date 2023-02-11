@@ -18,6 +18,14 @@ export default {
         console.log('the input from the user to be sent to netlify function is: ' + this.inputText)
         let bodyToSend = JSON.stringify({ input: this.inputText })
         console.log('bodyToSend to netlify function is: ' + bodyToSend)
+        let fullrequest = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ input: this.inputText })
+        }
+        console.log('full request to be sent is: ' + fullrequest)
         const response = await fetch("/.netlify/functions/api-call", {
           method: "POST",
           headers: {
