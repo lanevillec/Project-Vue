@@ -27,11 +27,13 @@ export default {
     },
     async passandReceiveValue() {
       const axios = require('axios');
+      console.log('passAndReceive has been triggered with the follwing value: ' + this.inputText)
       try {
         const res = await axios.post('/.netlify/functions/test-pass-value', {
           message: this.inputText
         });
         this.response = res.data;
+        console.log('Received this value back from netlify function: ' + JSON.stringify(this.data))
       } catch (err) {
         console.error(err);
       }
