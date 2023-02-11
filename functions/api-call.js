@@ -1,6 +1,12 @@
 const axios = require('axios');
 
 exports.handler = async (event) => {
+
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type"
+  };
+
   const data = JSON.parse(event.body);
   const input = data.input
   console.log('the data received from the view app to the netlify function is: ' + data)
@@ -17,6 +23,7 @@ exports.handler = async (event) => {
     });
     return {
       statusCode: 200,
+      headers,
       body: JSON.stringify(response.data)
     };
   } catch (err) {

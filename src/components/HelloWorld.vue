@@ -25,7 +25,7 @@ export default {
         const data = await response.json();
         console.log(data);
       } catch (error) {
-        console.error(error);
+        console.error('error with sending request to netlify function: ' + error);
       }
     }
   }
