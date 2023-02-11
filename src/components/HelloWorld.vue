@@ -17,7 +17,7 @@ export default {
       try {
         console.log('the input from the user to be sent to netlify function is: ' + this.inputText)
         let bodyToSend = JSON.stringify({ input: this.inputText })
-        console.log('bodyToSend to netlify function is: ' + bodyToSend)
+        console.log('bodyToSend to netlify function is: ' + JSON.stringify(bodyToSend))
         let fullrequest = {
           method: "POST",
           headers: {
