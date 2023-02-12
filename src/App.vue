@@ -17,7 +17,7 @@ export default {
     return {
       inputText: "",
       message: "",
-      //use 'http://localhost:8080/.netlify/functions/' for netlify dev server
+      //endPoint: '/.netlify/functions/',
       endPoint: '/.netlify/functions/',
     };
   },
@@ -35,7 +35,6 @@ export default {
     },
     async passAndReceiveValue() {
       console.log('passAndReceive has been triggered with the follwing value: ' + this.inputText)
-
 
       try {
         const response = await axios.post(this.endPoint.concat("test-pass-value"), {
