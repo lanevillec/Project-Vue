@@ -17,6 +17,7 @@ exports.handler = async (event) => {
     model: "text-davinci-003",
     prompt: inputText,
   });
+  console.log('full response from openai is ' + JSON.stringify(completion.data));
   console.log('got reponse from openai: ' + completion.data.choices[0].text);
 
   return {
