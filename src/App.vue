@@ -1,13 +1,14 @@
 <template>
   <div :style="{ backgroundColor: color }">
-    <!--<button @click="sendInput">Send Input</button>-->
-    <!--<button @click="getValue">Get Value</button>-->
     <div class="container">
-      <h1 :style="{ color: headerColor}">Color Generator</h1>
-      <!--<input class="inputBox" v-model="inputText" placeholder="describe a color..."/>-->
+      <h1 :style="{ color: fontColor}">Color Generator</h1>
       <textarea class="inputText" v-model="inputText" placeholder="describe a color..."></textarea>
-      <button class="button" @click="passAndReceiveValue">Generate</button>
-      <p :style="{ color: headerColor}">{{ summary }}</p>
+      <button class="button" @click="getOpenAICompletion">Generate Color</button>
+      <p :style="{ color: fontColor}">{{ summary }}</p>
+      <h1 :style="{ color: fontColor}">Image Generator</h1>
+      <textarea class="inputText" v-model="inputTextImage" placeholder="describe a picture..."></textarea>
+      <button class="button" @click="getOpenAIImage">Generate Image</button>
+      <img src="imageUrl" alt="AI Generated Image" />
     </div>
   </div>
 </template>
@@ -19,10 +20,12 @@ export default {
   data() {
     return {
       inputText: "",
+      inputTextImage: "",
+      imageUrl: "",
       message: "",
       endPoint: '/.netlify/functions/',
       color: "#FFFFFF",
-      headerColor: "#000000",
+      fontColor: "#000000",
       summary: "",
     };
   },
@@ -34,22 +37,10 @@ export default {
     },
   },
   methods: {
-    async getValue() {
-      try {
-        //was /.netlify/functions/test-get-value
-        console.log('getValue function was triggered successfully!')
-        const response = await fetch(this.endPoint.concat("test-get-value"));
-        const data = await response.json();
-        console.log('Success! Was able to get value from netlify function: ' + JSON.stringify(data));
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async passAndReceiveValue() {
+    async getOpenAICompletion() {
       console.log('passAndReceive has been triggered with the follwing value: ' + this.inputText)
-
       try {
-        const response = await axios.post(this.endPoint.concat("test-pass-value"), {
+        const response = await axios.post(this.endPoint.concat("getOpenAICompletion"), {
           message: this.inputText
         });
         console.log('Response received from netlify function test-past-value is: ' + JSON.stringify(response))
@@ -58,35 +49,31 @@ export default {
         this.message = message
         let secondPrompt = 'generate hex for complimentary color to ' + this.message
         console.log('Secondary prompt for complimentary color is ' + secondPrompt)
-        const response2 = await axios.post(this.endPoint.concat("test-pass-value"), {
+        const response2 = await axios.post(this.endPoint.concat("getOpenAICompletion"), {
           message: secondPrompt
         });
         let complimentaryColor = JSON.stringify(response2.data)
         complimentaryColor = complimentaryColor.substring(5, complimentaryColor.length - 1)
         console.log('complimentary color to original is ' + complimentaryColor)
         this.color = message
-        this.headerColor = complimentaryColor
+        this.fontColor = complimentaryColor
         this.summary = 'The input <' + this.inputText + '> generated the color hex code ' + message + ' and a complimentary font color of ' + complimentaryColor
         this.inputText = ""
       } catch (err) {
         console.error(err);
       }
     },
-    async sendInput() {
-      try {
-        console.log('the input from the user to be sent to netlify function is: ' + this.inputText)
-        const response = await fetch("/.netlify/functions/api-call", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ input: this.inputText })
-        });
-        const data = await response.json();
-        console.log('Success! Was able to get info from openai api: ' + JSON.stringify(data));
-      } catch (error) {
-        console.error('error with sending request to netlify function: ' + error);
+    async getOpenAIImage() {
+      try{
+        const response2 = await axios.post(this.endPoint.concat("getOpenAIImage"), {
+          message: this.inputTextImage
+        }); 
+        let imageUrl = JSON.stringify(response2.data)
+        this.imageUrl = imageUrl
+      } catch (err) {
+        console.error(err);
       }
+      
     }
   }
 };
