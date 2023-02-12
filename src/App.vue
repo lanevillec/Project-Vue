@@ -8,10 +8,12 @@
       <h1 :style="{ color: fontColor}">Answer Generator</h1>
       <textarea class="inputText" v-model="inputTextAnswer" placeholder="type your question..."></textarea>
       <button class="button answerButton" @click="getOpenAICompletionAnswer">Generate Answer</button>
+      <p :style="{ color: fontColor}">{{ promptForAnswer }}</p>
       <p :style="{ color: fontColor}">{{ answer }}</p>
       <h1 :style="{ color: fontColor}">Image Generator</h1>
       <textarea class="inputText" v-model="inputTextImage" placeholder="describe a picture..."></textarea>
       <button class="button" @click="getOpenAIImage">Generate Image</button>
+      <p :style="{ color: fontColor}">{{ promptForImage }}</p>
       <img class="generatedImage" :src="imageSrc" />
     </div>
   </div>
@@ -25,7 +27,9 @@ export default {
     return {
       inputText: "",
       inputTextImage: "",
+      promptForImage: "",
       inputTextAnswer: "",
+      promptForAnswer: "",
       answer: "",
       imageUrl: null,
       message: "",
@@ -76,8 +80,9 @@ export default {
         console.log('Response received from netlify function test-past-value is: ' + JSON.stringify(response))
         let message = JSON.stringify(response.data)
         message = message.substring(5, message.length - 1)
+        this.promptForAnswer = "Your question: " + this.inputTextAnswer
         this.answer = message.split("\n\n").join("<br>")
-        this.inputText = ""
+        this.inputTextAnswer = ""
       } catch (err) {
         console.error(err);
       }
@@ -91,6 +96,8 @@ export default {
         this.imageUrl = rawImageUrl
         console.log('rawImageUrl is finally set to: ' + rawImageUrl)
         console.log('imageUrl returned from openai is: ' + this.imageUrl)
+        this.promptForImage = "Your image prompt: " + this.inputTextImage
+        this.inputTextImage = ""
       } catch (err) {
         console.error(err);
       }
