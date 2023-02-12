@@ -41,7 +41,7 @@ export default {
           message: this.inputText
         });
         console.log('Response received from netlify function test-past-value is: ' + JSON.stringify(response))
-        let message = JSON.stringify(response.data).slice(4)
+        let message = JSON.stringify(response.data).trim()
         this.message = message
       } catch (err) {
         console.error(err);
