@@ -2,10 +2,13 @@
   <div :style="{ backgroundColor: color }">
     <!--<button @click="sendInput">Send Input</button>-->
     <!--<button @click="getValue">Get Value</button>-->
-    <h1>Describe a color</h1>
-    <input v-model="inputText" />
-    <button @click="passAndReceiveValue">Generate Color</button>
-    <div>{{ message }}</div>
+    <div class="container">
+      <h1 :style="{ color: headerColor}">Color Generator</h1>
+      <!--<input class="inputBox" v-model="inputText" placeholder="describe a color..."/>-->
+      <textarea v-model="inputText" placeholder="describe a color..."></textarea>
+      <button class="button" @click="passAndReceiveValue">Generate</button>
+      <h3 :style="{ color: headerColor}">{{ summary }}</h3>
+    </div>
   </div>
 </template>
 
@@ -18,7 +21,9 @@ export default {
       inputText: "",
       message: "",
       endPoint: '/.netlify/functions/',
-      color: "#FFFFFF"
+      color: "#FFFFFF",
+      headerColor: "#000000",
+      summary: "",
     };
   },
   computed: {
@@ -50,8 +55,20 @@ export default {
         console.log('Response received from netlify function test-past-value is: ' + JSON.stringify(response))
         let message = JSON.stringify(response.data)
         message = message.substring(5, message.length - 1)
-        this.color = message
         this.message = message
+        
+        this.inputText = ""
+        let secondPrompt = 'generate hex for complimentary color to ' + this.message
+        console.log('Secondary prompt for complimentary color is ' + secondPrompt)
+        const response2 = await axios.post(this.endPoint.concat("test-pass-value"), {
+          message: secondPrompt
+        });
+        let complimentaryColor = JSON.stringify(response2.data)
+        complimentaryColor = complimentaryColor.substring(5, complimentaryColor.length - 1)
+        console.log('complimentary color to original is ' + complimentaryColor)
+        this.color = message
+        this.headerColor = complimentaryColor
+        this.summary = 'You\'re input of ' + this.inputText + ' generated the color hex code ' + this.message + ' and a complimentary font color of ' + this.complimentaryColor
       } catch (err) {
         console.error(err);
       }
@@ -77,8 +94,47 @@ export default {
 </script>
 
 <style>
+html,
+body {
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+}
+
 .bg-color {
-  background-color: #0077BE;
+  background-color: inherit;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20%;
+}
+
+.button {
+  width: 20%;
+  margin: auto;
+  padding: auto;
+  font-size: 1rem;
+}
+
+.inputText {
+  width: 50%;
+  line-height: 5em;
+  margin: auto;
+}
+
+#app {
+  font-family: Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background-color: #FFFFFF;
+  margin-top: 0px;
 }
 </style>
 
