@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div :style="{ backgroundColor: color }">
+    <!--<button @click="sendInput">Send Input</button>-->
+    <!--<button @click="getValue">Get Value</button>-->
+    <h1>Describe a color</h1>
     <input v-model="inputText" />
-    <button @click="sendInput">Send Input</button>
-    <button @click="getValue">Get Value</button>
-    <button @click="passAndReceiveValue">Pass and Receive Value</button>
+    <button @click="passAndReceiveValue">Generate Color</button>
     <div>{{ message }}</div>
-    changes!112121
   </div>
 </template>
 
@@ -17,9 +17,16 @@ export default {
     return {
       inputText: "",
       message: "",
-      //endPoint: '/.netlify/functions/',
       endPoint: '/.netlify/functions/',
+      color: "#FFFFFF"
     };
+  },
+  computed: {
+    bgClass() {
+      return {
+        "bg-color": true,
+      };
+    },
   },
   methods: {
     async getValue() {
@@ -41,7 +48,9 @@ export default {
           message: this.inputText
         });
         console.log('Response received from netlify function test-past-value is: ' + JSON.stringify(response))
-        let message = JSON.stringify(response.data).trim().replace(/^"|"$/g, "")
+        let message = JSON.stringify(response.data)
+        message = message.substring(5, message.length - 1)
+        this.color = message
         this.message = message
       } catch (err) {
         console.error(err);
@@ -66,4 +75,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.bg-color {
+  background-color: #0077BE;
+}
+</style>
 
