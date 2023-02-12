@@ -20,7 +20,14 @@ exports.handler = async (event) => {
           }
         })
 
-        this.imageUrl = response.data.data[0].url
+        let imageUrl = response.data.data[0].url
+        console.log('the image url that was generated was: ' + imageUrl);
+
+        return {
+            statusCode: 200,
+            body: imageUrl,
+          }
+
       } catch (error) {
         console.error(error)
       }

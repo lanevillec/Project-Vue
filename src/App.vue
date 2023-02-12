@@ -8,7 +8,7 @@
       <h1 :style="{ color: fontColor}">Image Generator</h1>
       <textarea class="inputText" v-model="inputTextImage" placeholder="describe a picture..."></textarea>
       <button class="button" @click="getOpenAIImage">Generate Image</button>
-      <img src="imageUrl" alt="AI Generated Image" />
+      <img :src="imageUrl" alt="AI Generated Image" />
     </div>
   </div>
 </template>
@@ -28,13 +28,6 @@ export default {
       fontColor: "#000000",
       summary: "",
     };
-  },
-  computed: {
-    bgClass() {
-      return {
-        "bg-color": true,
-      };
-    },
   },
   methods: {
     async getOpenAICompletion() {
@@ -69,6 +62,7 @@ export default {
           message: this.inputTextImage
         }); 
         let imageUrl = JSON.stringify(response2.data)
+        console.log('imageUrl returned from openai is: ' + imageUrl)
         this.imageUrl = imageUrl
       } catch (err) {
         console.error(err);
