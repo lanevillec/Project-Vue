@@ -7,7 +7,7 @@
       <!--<input class="inputBox" v-model="inputText" placeholder="describe a color..."/>-->
       <textarea v-model="inputText" placeholder="describe a color..."></textarea>
       <button class="button" @click="passAndReceiveValue">Generate</button>
-      <h3 :style="{ color: headerColor}">{{ summary }}</h3>
+      <p :style="{ color: headerColor}">{{ summary }}</p>
     </div>
   </div>
 </template>
@@ -56,8 +56,6 @@ export default {
         let message = JSON.stringify(response.data)
         message = message.substring(5, message.length - 1)
         this.message = message
-        
-        this.inputText = ""
         let secondPrompt = 'generate hex for complimentary color to ' + this.message
         console.log('Secondary prompt for complimentary color is ' + secondPrompt)
         const response2 = await axios.post(this.endPoint.concat("test-pass-value"), {
@@ -68,7 +66,8 @@ export default {
         console.log('complimentary color to original is ' + complimentaryColor)
         this.color = message
         this.headerColor = complimentaryColor
-        this.summary = 'You\'re input of ' + this.inputText + ' generated the color hex code ' + this.message + ' and a complimentary font color of ' + this.complimentaryColor
+        this.summary = 'The input <' + this.inputText + '> generated the color hex code ' + message + ' and a complimentary font color of ' + complimentaryColor
+        this.inputText = ""
       } catch (err) {
         console.error(err);
       }
