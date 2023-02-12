@@ -21,13 +21,18 @@ export default {
     return {
       inputText: "",
       inputTextImage: "",
-      imageUrl: "",
+      rawImageUrl: "",
       message: "",
       endPoint: '/.netlify/functions/',
       color: "#FFFFFF",
       fontColor: "#000000",
       summary: "",
     };
+  },
+  computed: {
+    imageUrl() {
+      return `//${this.rawImageUrl}`
+    }
   },
   methods: {
     async getOpenAICompletion() {
@@ -63,7 +68,8 @@ export default {
         }); 
         let imageUrl = JSON.stringify(response2.data)
         console.log('imageUrl returned from openai is: ' + imageUrl)
-        this.imageUrl = imageUrl
+        this.rawImageUrl = imageUrl.slice(9)
+        console.log('rawImageUrl is finally set to: ' + this.rawImageUrl);
       } catch (err) {
         console.error(err);
       }

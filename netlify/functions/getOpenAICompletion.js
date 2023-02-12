@@ -4,7 +4,7 @@ exports.handler = async (event) => {
   const apiKey = process.env.OPENAI_API_KEY;
   const data = JSON.parse(event.body);
   const inputText= data.message
-  const prompt = 'generate image for '.concat(inputText)
+  const prompt = 'generate color hex for '.concat(inputText)
   console.log('prompt will be: ' + prompt)
   console.log('*****data received to netlify function from vue app is: ' + JSON.stringify(data))
   console.log('inputText variable now contains: ' + inputText);
