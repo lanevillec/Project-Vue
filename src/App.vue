@@ -5,6 +5,10 @@
       <textarea class="inputText" v-model="inputText" placeholder="describe a color..."></textarea>
       <button class="button" @click="getOpenAICompletion">Generate Color</button>
       <p :style="{ color: fontColor}">{{ summary }}</p>
+      <h1 :style="{ color: fontColor}">Answer Generator</h1>
+      <textarea class="inputText" v-model="inputTextAnswer" placeholder="type your question..."></textarea>
+      <button class="button answerButton" @click="getOpenAICompletionAnswer">Generate Answer</button>
+      <p :style="{ color: fontColor}">{{ answer }}</p>
       <h1 :style="{ color: fontColor}">Image Generator</h1>
       <textarea class="inputText" v-model="inputTextImage" placeholder="describe a picture..."></textarea>
       <button class="button" @click="getOpenAIImage">Generate Image</button>
@@ -21,6 +25,8 @@ export default {
     return {
       inputText: "",
       inputTextImage: "",
+      inputTextAnswer: "",
+      answer: "",
       imageUrl: null,
       message: "",
       endPoint: '/.netlify/functions/',
@@ -56,6 +62,21 @@ export default {
         this.color = message
         this.fontColor = complimentaryColor
         this.summary = 'The input <' + this.inputText + '> generated the color hex code ' + message + ' and a complimentary font color of ' + complimentaryColor
+        this.inputText = ""
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    async getOpenAICompletionAnswer() {
+      console.log('passAndReceive has been triggered with the follwing value: ' + this.inputText)
+      try {
+        const response = await axios.post(this.endPoint.concat("getOpenAICompletionAnswer"), {
+          message: this.inputTextAnswer
+        });
+        console.log('Response received from netlify function test-past-value is: ' + JSON.stringify(response))
+        let message = JSON.stringify(response.data)
+        message = message.substring(5, message.length - 1)
+        this.answer = message.split("\n\n").join("<br>")
         this.inputText = ""
       } catch (err) {
         console.error(err);
