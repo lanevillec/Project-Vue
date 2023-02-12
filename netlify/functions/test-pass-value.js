@@ -21,7 +21,7 @@ exports.handler = async (event) => {
 
   return {
     statusCode: 200,
-    body: completion.data.choices[0].text,
+    body: JSON.stringify(completion),
   }
 
 
