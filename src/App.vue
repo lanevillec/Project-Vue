@@ -5,7 +5,7 @@
     <div class="container">
       <h1 :style="{ color: headerColor}">Color Generator</h1>
       <!--<input class="inputBox" v-model="inputText" placeholder="describe a color..."/>-->
-      <textarea v-model="inputText" placeholder="describe a color..."></textarea>
+      <textarea class="inputText" v-model="inputText" placeholder="describe a color..."></textarea>
       <button class="button" @click="passAndReceiveValue">Generate</button>
       <p :style="{ color: headerColor}">{{ summary }}</p>
     </div>
@@ -93,14 +93,17 @@ export default {
 </script>
 
 <style>
-html,
-body {
+html, body {
   background-color: black;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+  margin: 0px !important;
+  padding: 0px !important
 
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
 }
 
 .bg-color {
@@ -108,23 +111,27 @@ body {
 }
 
 .container {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  padding-top: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: 20%;
-}
-
-.button {
-  width: 20%;
-  margin: auto;
-  padding: auto;
-  font-size: 1rem;
+  align-items: center;
+  min-height: 100vh;
+  gap: 1.5rem;
 }
 
 .inputText {
-  width: 50%;
-  line-height: 5em;
-  margin: auto;
+  line-height: 2rem;
+  width: 80%;
+}
+
+.button {
+  padding: auto;
+  font-size: 1rem;
+  width: 30%;
+  height: 2rem;
 }
 
 #app {
@@ -133,7 +140,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   background-color: #FFFFFF;
-  margin-top: 0px;
 }
 </style>
 
