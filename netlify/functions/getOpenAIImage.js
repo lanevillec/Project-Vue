@@ -12,7 +12,7 @@ exports.handler = async (event) => {
     try {
         const response = await axios.post('https://api.openai.com/v1/images/generations', {
           model: 'image-alpha-001',
-          prompt: inputTextForImage
+          prompt: inputTextForImage,
         }, {
           headers: {
             'Authorization': `Bearer ${apiKey}`,

@@ -8,7 +8,7 @@
       <h1 :style="{ color: fontColor}">Image Generator</h1>
       <textarea class="inputText" v-model="inputTextImage" placeholder="describe a picture..."></textarea>
       <button class="button" @click="getOpenAIImage">Generate Image</button>
-      <img :src="imageUrl" alt="AI Generated Image" />
+      <img class="generatedImage" :src="imageSrc" />
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
     return {
       inputText: "",
       inputTextImage: "",
-      rawImageUrl: "",
+      imageUrl: null,
       message: "",
       endPoint: '/.netlify/functions/',
       color: "#FFFFFF",
@@ -30,8 +30,8 @@ export default {
     };
   },
   computed: {
-    imageUrl() {
-      return `//${this.rawImageUrl}`
+    imageSrc() {
+      return this.imageUrl;
     }
   },
   methods: {
@@ -65,11 +65,11 @@ export default {
       try{
         const response2 = await axios.post(this.endPoint.concat("getOpenAIImage"), {
           message: this.inputTextImage
-        }); 
-        let imageUrl = JSON.stringify(response2.data)
-        console.log('imageUrl returned from openai is: ' + imageUrl)
-        this.rawImageUrl = imageUrl.slice(9)
-        console.log('rawImageUrl is finally set to: ' + this.rawImageUrl);
+        });
+        let rawImageUrl = response2.data
+        this.imageUrl = rawImageUrl
+        console.log('rawImageUrl is finally set to: ' + rawImageUrl)
+        console.log('imageUrl returned from openai is: ' + this.imageUrl)
       } catch (err) {
         console.error(err);
       }
@@ -119,6 +119,10 @@ html, body {
   font-size: 1rem;
   width: 30%;
   height: 2rem;
+}
+
+.generatedImage {
+  width: 80%;
 }
 
 #app {
