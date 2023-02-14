@@ -108,20 +108,37 @@ export default {
 
     },
     async generateTranscript() {
-      const audioUrl = './src/assets/voice_example.m4a'
+      const axios = require("axios");
+      const fs = require("fs");
       const assembly = axios.create({
         baseURL: "https://api.assemblyai.com/v2",
         headers: {
-          "Authorization": "42c9eaef6bc94a7ba57a59c5940cb99d",
-          "Content-Type": "application/json"
-        }
+          authorization: "42c9eaef6bc94a7ba57a59c5940cb99d",
+          "transfer-encoding": "chunked",
+        },
       });
-      let response = await assembly.post(
-        "/transcript", {
-          audio_url: audioUrl
-        }
-      )
-      console.log(response);
+      const file = "/assets/voice_example.m4a";
+      fs.readFile(file, (err, data) => {
+        if (err) return console.error(err);
+
+        assembly
+          .post("/upload", data)
+          .then((res) => {
+            console.log(res.data)
+            let upload_url = res.data
+            console.log('Audio file uploaded at this URL: ' + upload_url)
+            assembly
+              .post("/transcript", {
+                audio_url: upload_url
+              })
+              .then((res) => {
+                console.log('Transcript returned is: ' + res.data)
+                this.transcript = res.data
+              })
+              .catch((err) => console.error(err));
+          })
+          .catch((err) => console.error(err));
+      });
 
     }
   }
