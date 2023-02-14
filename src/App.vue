@@ -110,6 +110,8 @@ export default {
     async generateTranscript() {
       const axios = require("axios");
       const fs = require("fs");
+
+      console.log('Generate transcript has fired!')
       const assembly = axios.create({
         baseURL: "https://api.assemblyai.com/v2",
         headers: {
@@ -118,13 +120,12 @@ export default {
         },
       });
       const file = "/assets/voice_example.m4a";
+      console.log('Reading file from: ' + file)
       fs.readFile(file, (err, data) => {
         if (err) return console.error(err);
-
         assembly
           .post("/upload", data)
           .then((res) => {
-            console.log(res.data)
             let upload_url = res.data
             console.log('Audio file uploaded at this URL: ' + upload_url)
             assembly
