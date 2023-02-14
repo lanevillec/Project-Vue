@@ -1,20 +1,23 @@
 <template>
   <div :style="{ backgroundColor: color }">
     <div class="container">
-      <h1 :style="{ color: fontColor}">Color Generator</h1>
+      <h1 :style="{ color: fontColor }">Color Generator</h1>
       <textarea class="inputText" v-model="inputText" placeholder="describe a color..."></textarea>
       <button class="button" @click="getOpenAICompletion">Generate Color</button>
-      <p :style="{ color: fontColor}">{{ summary }}</p>
-      <h1 :style="{ color: fontColor}">Answer Generator</h1>
+      <p :style="{ color: fontColor }">{{ summary }}</p>
+      <h1 :style="{ color: fontColor }">Answer Generator</h1>
       <textarea class="inputText" v-model="inputTextAnswer" placeholder="type your question..."></textarea>
       <button class="button answerButton" @click="getOpenAICompletionAnswer">Generate Answer</button>
-      <p :style="{ color: fontColor}">{{ promptForAnswer }}</p>
-      <p :style="{ color: fontColor}">{{ answer }}</p>
-      <h1 :style="{ color: fontColor}">Image Generator</h1>
+      <p :style="{ color: fontColor }">{{ promptForAnswer }}</p>
+      <p :style="{ color: fontColor }">{{ answer }}</p>
+      <h1 :style="{ color: fontColor }">Image Generator</h1>
       <textarea class="inputText" v-model="inputTextImage" placeholder="describe a picture..."></textarea>
       <button class="button" @click="getOpenAIImage">Generate Image</button>
-      <p :style="{ color: fontColor}">{{ promptForImage }}</p>
+      <p :style="{ color: fontColor }">{{ promptForImage }}</p>
       <img class="generatedImage" :src="imageSrc" />
+      <h1 :style="{ color: fontColor }">Transcript Creator</h1>
+      <button class="button" @click="generateTranscript">Generate Transcript</button>
+      <p :style="{ color: fontColor }">{{ transcript }}</p>
     </div>
   </div>
 </template>
@@ -37,6 +40,7 @@ export default {
       color: "#FFFFFF",
       fontColor: "#000000",
       summary: "",
+      transcript: "",
     };
   },
   computed: {
@@ -88,7 +92,7 @@ export default {
       }
     },
     async getOpenAIImage() {
-      try{
+      try {
         const response2 = await axios.post(this.endPoint.concat("getOpenAIImage"), {
           message: this.inputTextImage
         });
@@ -101,18 +105,35 @@ export default {
       } catch (err) {
         console.error(err);
       }
-      
+
+    },
+    async generateTranscript() {
+      const audioUrl = './src/assets/voice_example.m4a'
+      const assembly = axios.create({
+        baseURL: "https://api.assemblyai.com/v2",
+        headers: {
+          "Authorization": "42c9eaef6bc94a7ba57a59c5940cb99d",
+          "Content-Type": "application/json"
+        }
+      });
+      let response = await assembly.post(
+        "/transcript", {
+          audio_url: audioUrl
+        }
+      )
+      console.log(response);
+
     }
   }
 };
 </script>
 
 <style>
-html, body {
+html,
+body {
   background-color: black;
   margin: 0px !important;
   padding: 0px !important
-
 }
 
 * {
