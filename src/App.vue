@@ -140,6 +140,9 @@ export default {
           .catch((err) => console.error(err));
       });
 
+    },
+    async generateSummary(transcript){
+      console.log(transcript)
     }
   }
 };
