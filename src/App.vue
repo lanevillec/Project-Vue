@@ -15,12 +15,18 @@
       <button class="button" @click="getOpenAIImage">Generate Image</button>
       <p :style="{ color: fontColor}">{{ promptForImage }}</p>
       <img class="generatedImage" :src="imageSrc" />
+      <h1 :style="{ color: fontColor}">Sound Analyzer</h1>
+      <form>
+        <input type="file" ref="fileInput" @change="uploadFile"/>
+      </form>
+      <p :style="{ color: fontColor}">{{ notes }}</p>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Tone from 'tone';
 
 export default {
   data() {
@@ -37,6 +43,7 @@ export default {
       color: "#FFFFFF",
       fontColor: "#000000",
       summary: "",
+      notes: null,
     };
   },
   computed: {
@@ -102,7 +109,21 @@ export default {
         console.error(err);
       }
       
+    },
+    async uploadFile() {
+      const input = this.$refs.fileInput
+      const file = input.files[0]
+
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const audioBuffer = await audioContext.decodeAudioData(file);
+      const tone = new Tone.ToneAudioBuffer(audioBuffer);
+      const midi = new Tone.MidiConvert();
+      const notes = midi.getNotes(tone.toToneBuffer());
+      console.log('Notes produced by audio analysis with Tone are : ' + JSON.stringify(notes))
+
+      this.notes = notes;
     }
+
   }
 };
 </script>
