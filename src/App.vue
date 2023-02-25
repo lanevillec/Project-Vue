@@ -1,25 +1,31 @@
 <template>
   <div :style="{ backgroundColor: color }">
     <div class="container">
-      <h1 :style="{ color: fontColor}">Color Generator</h1>
+      <h1 :style="{ color: fontColor }">Color Generator</h1>
       <textarea class="inputText" v-model="inputText" placeholder="describe a color..."></textarea>
       <button class="button" @click="getOpenAICompletion">Generate Color</button>
-      <p :style="{ color: fontColor}">{{ summary }}</p>
-      <h1 :style="{ color: fontColor}">Answer Generator</h1>
+      <p :style="{ color: fontColor }">{{ summary }}</p>
+      <h1 :style="{ color: fontColor }">Answer Generator</h1>
       <textarea class="inputText" v-model="inputTextAnswer" placeholder="type your question..."></textarea>
       <button class="button answerButton" @click="getOpenAICompletionAnswer">Generate Answer</button>
-      <p :style="{ color: fontColor}">{{ promptForAnswer }}</p>
-      <p :style="{ color: fontColor}">{{ answer }}</p>
-      <h1 :style="{ color: fontColor}">Image Generator</h1>
+      <p :style="{ color: fontColor }">{{ promptForAnswer }}</p>
+      <p :style="{ color: fontColor }">{{ answer }}</p>
+      <h1 :style="{ color: fontColor }">Image Generator</h1>
       <textarea class="inputText" v-model="inputTextImage" placeholder="describe a picture..."></textarea>
       <button class="button" @click="getOpenAIImage">Generate Image</button>
-      <p :style="{ color: fontColor}">{{ promptForImage }}</p>
+      <p :style="{ color: fontColor }">{{ promptForImage }}</p>
       <img class="generatedImage" :src="imageSrc" />
+<<<<<<< HEAD
       <h1 :style="{ color: fontColor}">Sound Analyzer</h1>
       <form>
         <input type="file" ref="fileInput" @change="uploadFile"/>
       </form>
       <p :style="{ color: fontColor}">{{ notes }}</p>
+=======
+      <h1 :style="{ color: fontColor }">Transcript Creator</h1>
+      <button class="button" @click="generateTranscript">Generate Transcript</button>
+      <p :style="{ color: fontColor }">{{ transcript }}</p>
+>>>>>>> 0f056263e1ebbbc39f7d2edc9d7e2b4523b3e3f8
     </div>
   </div>
 </template>
@@ -43,7 +49,11 @@ export default {
       color: "#FFFFFF",
       fontColor: "#000000",
       summary: "",
+<<<<<<< HEAD
       notes: null,
+=======
+      transcript: "",
+>>>>>>> 0f056263e1ebbbc39f7d2edc9d7e2b4523b3e3f8
     };
   },
   computed: {
@@ -95,7 +105,7 @@ export default {
       }
     },
     async getOpenAIImage() {
-      try{
+      try {
         const response2 = await axios.post(this.endPoint.concat("getOpenAIImage"), {
           message: this.inputTextImage
         });
@@ -108,6 +118,7 @@ export default {
       } catch (err) {
         console.error(err);
       }
+<<<<<<< HEAD
       
     },
     async uploadFile() {
@@ -122,6 +133,47 @@ export default {
       console.log('Notes produced by audio analysis with Tone are : ' + JSON.stringify(notes))
 
       this.notes = notes;
+=======
+
+    },
+    async generateTranscript() {
+      const axios = require("axios");
+      const fs = require("fs");
+
+      console.log('Generate transcript has fired!')
+      const assembly = axios.create({
+        baseURL: "https://api.assemblyai.com/v2",
+        headers: {
+          authorization: "42c9eaef6bc94a7ba57a59c5940cb99d",
+          "transfer-encoding": "chunked",
+        },
+      });
+      const file = "/assets/voice_example.m4a";
+      console.log('Reading file from: ' + file)
+      fs.readFile(file, (err, data) => {
+        if (err) return console.error(err);
+        assembly
+          .post("/upload", data)
+          .then((res) => {
+            let upload_url = res.data
+            console.log('Audio file uploaded at this URL: ' + upload_url)
+            assembly
+              .post("/transcript", {
+                audio_url: upload_url
+              })
+              .then((res) => {
+                console.log('Transcript returned is: ' + res.data)
+                this.transcript = res.data
+              })
+              .catch((err) => console.error(err));
+          })
+          .catch((err) => console.error(err));
+      });
+
+    },
+    async generateSummary(transcript){
+      console.log(transcript)
+>>>>>>> 0f056263e1ebbbc39f7d2edc9d7e2b4523b3e3f8
     }
 
   }
@@ -129,11 +181,11 @@ export default {
 </script>
 
 <style>
-html, body {
+html,
+body {
   background-color: black;
   margin: 0px !important;
   padding: 0px !important
-
 }
 
 * {
