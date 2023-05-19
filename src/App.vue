@@ -1,5 +1,18 @@
 <template>
-  <div :style="{ backgroundColor: color }">
+  <div id="app">
+    <div class="sidebar">
+      <ul>
+        <li><router-link to="/projects">Projects</router-link></li>
+        <li><router-link to="/ai-factor">AI Factor</router-link></li>
+        <li><router-link to="/about-me">About Me</router-link></li>
+      </ul>
+    </div>
+    <div class="content">
+      <router-view></router-view>
+    </div>
+  </div>
+
+  <!--<div :style="{ backgroundColor: color }">
     <div class="container">
       <h1 :style="{ color: fontColor }">Color Generator</h1>
       <textarea class="inputText" v-model="inputText" placeholder="describe a color..."></textarea>
@@ -16,14 +29,16 @@
       <p :style="{ color: fontColor }">{{ promptForImage }}</p>
       <img class="generatedImage" :src="imageSrc" />
       <h1 :style="{ color: fontColor }">Transcript Creator</h1>
-      <button class="button" @click="generateTranscript">Generate Transcript</button>
-      <p :style="{ color: fontColor }">{{ transcript }}</p>
+      <input type="file" @change="handleFileUpload" />
+      <button @click="generateTranscript" :disabled="!file">Generate Transcript</button>
+      <div v-if="transcript">{{ transcript }}</div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script>
-import axios from 'axios';
+/*import axios from 'axios';
+import { ref } from 'vue'
 
 export default {
   data() {
@@ -41,6 +56,7 @@ export default {
       fontColor: "#000000",
       summary: "",
       transcript: "",
+      file: null,
     };
   },
   computed: {
@@ -107,9 +123,71 @@ export default {
       }
 
     },
-    async generateTranscript() {
+    setup() {
+    const file = ref(null)
+    const transcript = ref(null)
+
+    const handleFileUpload = event => {
+      file.value = event.target.files[0]
+    }
+
+    const generateTranscript = async () => {
+      const formData = new FormData()
+      formData.append('file', file.value)
+
+      try {
+        const response = await axios.post('https://api.assemblyai.com/v2/transcript', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': '42c9eaef6bc94a7ba57a59c5940cb99d'
+          }
+        })
+
+        const { id } = response.data
+
+        let status = 'queued'
+
+        while (status === 'queued' || status === 'processing') {
+          const { data } = await axios.get(`https://api.assemblyai.com/v2/transcript/${id}`, {
+            headers: {
+              'Authorization': '42c9eaef6bc94a7ba57a59c5940cb99d'
+            }
+          })
+
+          status = data.status
+
+          if (status === 'completed') {
+            transcript.value = data.text
+          } else {
+            await new Promise(resolve => setTimeout(resolve, 1000))
+          }
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    return {
+      file,
+      transcript,
+      handleFileUpload,
+      generateTranscript
+    }
+  }
+    /*onFileChange(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const content = e.target.result;
+        // Do something with the file content
+        console.log(content)
+        this.generateTranscript(content)
+      };
+      reader.readAsText(file);
+    },
+    async generateTranscript(file) {
       const axios = require("axios");
-      const fs = require("fs");
 
       console.log('Generate transcript has fired!')
       const assembly = axios.create({
@@ -119,37 +197,53 @@ export default {
           "transfer-encoding": "chunked",
         },
       });
-      const file = "/assets/voice_example.m4a";
-      console.log('Reading file from: ' + file)
-      fs.readFile(file, (err, data) => {
-        if (err) return console.error(err);
-        assembly
-          .post("/upload", data)
-          .then((res) => {
-            let upload_url = res.data
-            console.log('Audio file uploaded at this URL: ' + upload_url)
-            assembly
-              .post("/transcript", {
-                audio_url: upload_url
-              })
-              .then((res) => {
-                console.log('Transcript returned is: ' + res.data)
-                this.transcript = res.data
-              })
-              .catch((err) => console.error(err));
-          })
-          .catch((err) => console.error(err));
-      });
 
-    },
-    async generateSummary(transcript){
-      console.log(transcript)
-    }
-  }
-};
+      assembly
+        .post("/upload", file)
+        .then((res) => {
+          let upload_url = res.data
+          console.log('Audio file uploaded at this URL: ' + upload_url)
+          assembly
+            .post("/transcript", {
+              audio_url: upload_url
+            })
+            .then((res) => {
+              console.log('Transcript returned is: ' + res.data)
+              this.transcript = res.data
+            })
+            .catch((err) => console.error(err));
+        })
+        .catch((err) => console.error(err));
+
+    },*/
+//  }
+//};
 </script>
 
 <style>
+#app {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  background-color: #f9f9f9;
+  padding: 15px;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 15px;
+}
+
+.router-link-exact-active {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/*
 html,
 body {
   background-color: black;
@@ -201,6 +295,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   background-color: #FFFFFF;
-}
+}*/
 </style>
 
