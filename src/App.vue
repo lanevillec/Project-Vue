@@ -35,12 +35,13 @@ export default {
       let cactuar = document.querySelector("#cactuar");
       let container = cactuar.parentElement;
       let halfWidth = container.offsetWidth / 2;
+      let halfCactuar = cactuar.offsetWidth / 2;
 
       let tl = gsap.timeline({ repeat: -1 });
 
       tl.to(cactuar, {
         duration: 3,
-        x: halfWidth - cactuar.offsetWidth / 2,
+        x: halfWidth - halfCactuar,
         onStart: () => {
           gsap.set(cactuar, { scaleX: 1 });
         },
@@ -52,14 +53,14 @@ export default {
         })
         .to(cactuar, {
           duration: 3,
-          x: container.offsetWidth - cactuar.offsetWidth,
+          x: container.offsetWidth - halfCactuar,
           onStart: () => {
             gsap.set(cactuar, { scaleX: 1, rotationY: 0 });
           },
         })
         .to(cactuar, {
           duration: 3,
-          x: halfWidth - cactuar.offsetWidth / 2,
+          x: halfWidth - halfCactuar,
           onStart: () => {
             gsap.set(cactuar, { scaleX: -1, rotationY: 0 });
           },
@@ -79,8 +80,6 @@ export default {
     });
   },
 };
-
-
 
 </script>
 
@@ -189,51 +188,6 @@ body, html {
   left: 0;
   height: 32px;
   width: auto;
-  /*animation: walk 20s linear infinite;
-  transform: scaleX(1);*/
-}
-
-@keyframes walk {
-  0%, 100% {
-    left: 0;
-    transform: scaleX(1);
-  }
-  20% {
-    left: 50%;
-    transform: scaleX(1);
-  }
-  22% {
-    left: 50%;
-    transform: scaleX(1) rotateY(180deg);
-  }
-  24% {
-    left: 50%;
-    transform: scaleX(1) rotateY(360deg);
-  }
-  25%, 49% {
-    left: calc((100% - 30px) * ((time - 25%) / 24%));
-    transform: scaleX(1);
-  }
-  50% {
-    left: calc(100% - 30px);
-    transform: scaleX(-1);
-  }
-  70% {
-    left: 50%;
-    transform: scaleX(-1);
-  }
-  72% {
-    left: 50%;
-    transform: scaleX(-1) rotateY(180deg);
-  }
-  74% {
-    left: 50%;
-    transform: scaleX(-1) rotateY(360deg);
-  }
-  75%, 99% {
-    left: calc((100% - 30px) * ((100% - time) / 24%));
-    transform: scaleX(-1);
-  }
 }
 
 @media (max-width: 600px) {
@@ -277,8 +231,8 @@ body, html {
     width: auto;
   }
 
-  .cactaur-container{
-    width: 100%;
+  .cactuar-container {
+    width: 95%
   }
 
 }
