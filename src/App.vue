@@ -34,6 +34,7 @@
 .sidebar ul {
   list-style-type: none;
   padding: 0;
+  flex-direction: column; /* Stack the items vertically */
 }
 
 .sidebar ul li {
@@ -90,6 +91,30 @@ body, html {
 .name {
   font-size: 18px;
   font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  /* On small screens, stack the sidebar and content vertically */
+  #app {
+    flex-direction: column;
+  }
+
+  /* Adjust the sidebar width and height */
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Stack the menu items horizontally */
+  .sidebar ul {
+    flex-direction: row;
+    justify-content: space-around; /* Evenly distribute the items */
+  }
+
+  /* Adjust the padding on the menu items */
+  .sidebar ul li {
+    padding: 15px;
+  }
 }
 
 </style>
