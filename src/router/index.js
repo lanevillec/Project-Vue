@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Projects from './components/Projects.vue'
-import AIFactor from './components/AIFactor.vue'
+import ProjectPage from './components/ProjectPage.vue'
+import AIFactory from './components/AIFactory.vue'
 import AboutMe from './components/AboutMe.vue'
 
 const routes = [
   {
-    path: '/projects',
-    name: 'Projects',
-    component: Projects
+    path: '/project-page',
+    name: 'ProjectPage',
+    component: ProjectPage
   },
   {
-    path: '/ai-factor',
-    name: 'AIFactor',
-    component: AIFactor
+    path: '/ai-factory',
+    name: 'AIFactory',
+    component: AIFactory
   },
   {
     path: '/about-me',

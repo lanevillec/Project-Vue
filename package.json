@@ -16,7 +16,8 @@
     "qs": "^6.11.0",
     "tone": "^14.7.77",
     "vue": "^3.2.13",
-    "vue-axios": "^3.5.2"
+    "vue-axios": "^3.5.2",
+    "vue-router": "^4.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
