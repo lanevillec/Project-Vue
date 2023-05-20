@@ -30,6 +30,15 @@
   display: flex;
   font-family: 'Arial', sans-serif;
   color: #f1f1f1; /* Light color for text on dark background */
+  width: 100%;
+  height: 100%;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .sidebar {
@@ -69,18 +78,6 @@
   background-color: #1b394c; /* Slightly lighter navy for content background */
 }
 
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-}
-
-#app {
-  width: 100%;
-  height: 100%;
-}
-
 .header {
   display: flex;
   align-items: center;
@@ -99,6 +96,60 @@ body, html {
 .name {
   font-size: 18px;
   font-weight: bold;
+}
+
+
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  width: 50px; /* adjust as needed */
+  height: 50px; /* adjust as needed */
+  margin-right: 10px; /* adjust as needed */
+}
+
+.cactuar-container {
+  position: relative;
+  height: 30px; /* You can adjust this as needed */
+  width: 100%; /* Added this to let the cactuar move along the entire line */
+  overflow: visible; /* Lets the cactuar image appear outside the bounds of its container */
+}
+
+.cactuar {
+  position: absolute;
+  bottom: -20px; /* adjust as needed */
+  left: 0;
+  height: 32px;
+  width: auto;
+  animation: walk 8s linear infinite;
+  transform: scaleX(1);
+}
+
+@keyframes walk {
+  0% { 
+    left: 0;
+    transform: scaleX(1);
+  }
+  49.99% { 
+    left: calc(100% - 30px);
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(-1);
+  }
+  100% { 
+    left: 0;
+    transform: scaleX(-1);
+  }
 }
 
 @media (max-width: 600px) {
@@ -123,58 +174,29 @@ body, html {
   .sidebar ul li {
     padding: 15px;
   }
-}
 
-.profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.info {
-  display: flex;
-  align-items: center;
-}
-
-.user-icon {
-  width: 50px; /* adjust as needed */
-  height: 50px; /* adjust as needed */
-  margin-right: 10px; /* adjust as needed */
-}
-
-.cactuar-container {
-  position: relative;
-  height: 20px; /* You can adjust this as needed */
-  width: 100%; /* Added this to let the cactuar move along the entire line */
-  overflow: visible; /* Lets the cactuar image appear outside the bounds of its container */
-}
-
-.cactuar {
-  position: absolute;
-  bottom: -20px; /* adjust as needed */
-  left: 0;
-  width: 30px;
-  height: 30px;
-  animation: walk 8s linear infinite;
-  transform: scaleX(1);
-}
-
-@keyframes walk {
-  0% { 
-    left: 0;
-    transform: scaleX(1);
+  .header {
+    flex-direction: column;
+    align-items: center;
   }
-  49.99% { 
-    left: calc(100% - 30px);
-    transform: scaleX(1);
+
+  .profile {
+    width: 100%;
   }
-  50% {
-    transform: scaleX(-1);
+
+  .info {
+    margin-bottom: 10px;
   }
-  100% { 
-    left: 0;
-    transform: scaleX(-1);
+
+  .cactuar {
+    height: 30px;
+    width: auto;
   }
+
+  .cactaur-container{
+    width: 100%;
+  }
+
 }
 
 </style>
