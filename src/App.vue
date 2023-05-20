@@ -28,6 +28,13 @@
       <button class="button" @click="getOpenAIImage">Generate Image</button>
       <p :style="{ color: fontColor }">{{ promptForImage }}</p>
       <img class="generatedImage" :src="imageSrc" />
+<<<<<<< HEAD
+      <h1 :style="{ color: fontColor}">Sound Analyzer</h1>
+      <form>
+        <input type="file" ref="fileInput" @change="uploadFile"/>
+      </form>
+      <p :style="{ color: fontColor}">{{ notes }}</p>
+=======
       <h1 :style="{ color: fontColor }">Transcript Creator</h1>
       <input type="file" @change="handleFileUpload" />
       <button @click="generateTranscript" :disabled="!file">Generate Transcript</button>
@@ -37,8 +44,8 @@
 </template>
 
 <script>
-/*import axios from 'axios';
-import { ref } from 'vue'
+import axios from 'axios';
+import Tone from 'tone';
 
 export default {
   data() {
@@ -55,6 +62,7 @@ export default {
       color: "#FFFFFF",
       fontColor: "#000000",
       summary: "",
+      notes: null,
       transcript: "",
       file: null,
     };
@@ -121,6 +129,22 @@ export default {
       } catch (err) {
         console.error(err);
       }
+<<<<<<< HEAD
+      
+    },
+    async uploadFile() {
+      const input = this.$refs.fileInput
+      const file = input.files[0]
+
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const audioBuffer = await audioContext.decodeAudioData(file);
+      const tone = new Tone.ToneAudioBuffer(audioBuffer);
+      const midi = new Tone.MidiConvert();
+      const notes = midi.getNotes(tone.toToneBuffer());
+      console.log('Notes produced by audio analysis with Tone are : ' + JSON.stringify(notes))
+
+      this.notes = notes;
+=======
 
     },
     setup() {
@@ -215,9 +239,14 @@ export default {
         })
         .catch((err) => console.error(err));
 
-    },*/
-//  }
-//};
+    },
+    async generateSummary(transcript){
+      console.log(transcript)
+>>>>>>> 0f056263e1ebbbc39f7d2edc9d7e2b4523b3e3f8
+    }
+
+  }
+};
 </script>
 
 <style>
