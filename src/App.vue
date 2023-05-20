@@ -2,8 +2,16 @@
   <div id="app">
     <div class="sidebar">
       <div class="header">
-        <div class="icon"></div>
-        <div class="name">Christopher Laneville</div>
+        <div class="profile">
+          <div class="info">
+            <!--<img src="/path-to-your-icon/icon.png" class="user-icon"/>-->
+            <div class="name">Christopher Laneville</div>
+          </div>
+          <div class="cactuar-container">
+            <img src="/Cactuar.png" class="cactuar" />
+          </div>
+        </div>
+        <!-- ... your navigation items ... -->
       </div>
       <ul>
         <li><router-link active-class="active" to="/project-page">Project Page</router-link></li>
@@ -114,6 +122,58 @@ body, html {
   /* Adjust the padding on the menu items */
   .sidebar ul li {
     padding: 15px;
+  }
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  width: 50px; /* adjust as needed */
+  height: 50px; /* adjust as needed */
+  margin-right: 10px; /* adjust as needed */
+}
+
+.cactuar-container {
+  position: relative;
+  height: 20px; /* You can adjust this as needed */
+  width: 100%; /* Added this to let the cactuar move along the entire line */
+  overflow: visible; /* Lets the cactuar image appear outside the bounds of its container */
+}
+
+.cactuar {
+  position: absolute;
+  bottom: -20px; /* adjust as needed */
+  left: 0;
+  width: 30px;
+  height: 30px;
+  animation: walk 8s linear infinite;
+  transform: scaleX(1);
+}
+
+@keyframes walk {
+  0% { 
+    left: 0;
+    transform: scaleX(1);
+  }
+  49.99% { 
+    left: calc(100% - 30px);
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(-1);
+  }
+  100% { 
+    left: 0;
+    transform: scaleX(-1);
   }
 }
 
