@@ -23,7 +23,7 @@
   <style>
 .about-me {
   display: flex;
-  min-height: 100vh; /* This ensures the minimum height is the full viewport height */
+  min-height: 90vh; /* This ensures the minimum height is the full viewport height */
   padding: 0; /* Adjust padding as needed */
 }
 
@@ -37,7 +37,7 @@
 
 .resume-iframe {
   width: 100%;
-  height: 750px;
+  height: 95vh;
   border: none;
 }
 
